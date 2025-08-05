@@ -29,7 +29,6 @@ type Blog = {
 // Propsの型指定
 type PageProps = {
     params: Promise<{slug: string}>
-    searchParams: {draftKey?: string}
 }
 
 // 動的ルーティングのためにslugのリストを全部取得する
@@ -48,14 +47,13 @@ export async function generateStaticParams() {
 }
 
 // 特定の投稿を取得する
-async function getBlogDetail(slug: string, draftKey?: string): Promise<Blog | null> {
+async function getBlogDetail(slug: string): Promise<Blog | null> {
     try {
         const decodedSlug = decodeURIComponent(slug);
         const data = await client.getList<Blog>({
             endpoint: 'blogs',
             queries: {
                 filters: `slug[equals]${decodedSlug}`,
-                draftKey: draftKey,
             },
         });
 
@@ -76,10 +74,9 @@ function formatData(dateString: string): string {
   return date.toLocaleDateString('ja-JP');
 }
 
-export default async function BlogDetail({params, searchParams}: PageProps) {
+export default async function BlogDetail({params}: PageProps) {
     const {slug} = await params;
-    const draftKey = searchParams?.draftKey;
-    const post = await getBlogDetail(slug, draftKey)
+    const post = await getBlogDetail(slug)
 
     return (
         <main className='bg-white pt-18 min-h-screen'>
