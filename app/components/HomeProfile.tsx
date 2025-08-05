@@ -1,5 +1,6 @@
 import { client } from "@/libs/microcms"
 import Image from "next/image";
+import Link from "next/link";
 
 // アイコン画像の型指定
 type IconImage = {
@@ -55,6 +56,10 @@ export default async function HomeProfile() {
             <p className="text-sm text-black leading-relaxed">
                 {profile?.introduction}
             </p>
+            <div className="mt-2 flex gap-x-2">
+                <Link href='https://github.com/whoisyuma'><img src="/github-icon.svg" alt="アイコン画像" className="w-6 h-6"/></Link>
+                <Link href='mailto:whoisyuma.0913@gmail.com'><img src="/email-icon.svg" alt="アイコン画像" className="w-7 h-7"/></Link>
+            </div>
         </div>
     )
 }
