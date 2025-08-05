@@ -1,103 +1,204 @@
+import { client } from "@/libs/microcms";
 import Image from "next/image";
+import Link from "next/link";
+import CategoryNav from "./components/CategoryNav";
+import HomeProfile from "./components/HomeProfile";
+import TagList from "./components/TagList";
 
-export default function Home() {
+// ISR設定
+export const revalidate = 300;
+
+// アイキャッチ画像の型指定
+type Eyecatch = {
+  url: string,
+  height: number,
+  width: number,
+}
+
+// ブログ記事の型指定
+type Blog = {
+  id: string,
+  title: string,
+  updatedAt: string,
+  eyecatch?: Eyecatch,
+  slug: string,
+}
+
+// microCMSからブログ記事の取得
+async function getBlogPosts(): Promise<Blog[] | null> {
+  try {
+    const data = await client.getList<Blog>({
+      endpoint: 'blogs',
+      queries: {
+        limit: 50,
+      }
+    });
+    return data.contents;
+  } catch (error) {
+    console.error('ブログ記事の取得に失敗しました：', error);
+    return null;
+  }
+}
+
+// カテゴリの型指定
+type Category = {
+    id: string;
+    name: string;
+    slug: string;
+}
+
+// microCMSからブログのカテゴリを取得
+async function getCategories(): Promise<Category[] | null> {
+  try {
+    const categories = await client.getList<Category>({
+      endpoint: 'categories',
+      queries: {
+        limit: 5,
+      }
+    });
+    return categories.contents;
+  } catch (error) {
+    console.error('カテゴリの取得に失敗しました：', error)
+    return null
+  }
+}
+
+// タグの型指定
+type Tag = {
+  id: string;
+  name: string;
+  slug: string;
+}
+
+// microCMSからブログのタグを取得
+async function getTag(): Promise<Tag[] | null> {
+  try {
+    const tags = await client.getList<Tag>({
+      endpoint: 'tags',
+      queries: {
+        limit: 50,
+      }
+    });
+    return tags.contents;
+  } catch (error) {
+    console.error('タグの取得に失敗しました：', error);
+    return null;
+  }
+}
+
+// 日付を「〜前」に変換する関数
+const formatRelativeTime = (dateString: string): string => {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds}秒前`;
+  }
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
+  if (diffInMinutes < 60) {
+    return `${diffInMinutes}分前`;
+  }
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  if (diffInHours < 24) {
+    return `${diffInHours}時間前`;
+  }
+  const diffInDays = Math.floor(diffInHours / 24);
+  if (diffInDays < 30) {
+    return `${diffInDays}日前`;
+  }
+  const diffInMonths = Math.floor(diffInDays / 30);
+  if (diffInMonths < 12) {
+    return `${diffInMonths}ヶ月前`;
+  }
+  const diffInYears = Math.floor(diffInDays / 365);
+  return `${diffInYears}年前`;
+};
+
+export default async function Home() {
+  const posts = await getBlogPosts();
+  const categories = await getCategories();
+  const tags = await getTag();
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <main className='bg-white pt-18 min-h-screen pb-10'>
+      <div className="relative w-full h-40 md:h-55">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+          src="/main-picture.png"
+          alt="メイン画像"
+          fill
+          className="object-cover"
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <div className="flex flex-col md:flex-row gap-2 md:gap-6 md:mt-10 max-w-6xl md:mx-auto">
+        <aside className="md:w-3/10 w-full md:p-0 p-4">
+          <HomeProfile/>
+
+          {tags && tags.length > 0 && (
+            <div className="mt-5 hidden md:block">
+              <h2 className="text-sm font-bold">タグ一覧</h2>
+              <TagList tags={tags}/>
+            </div>
+          )}
+
+          <div className="mt-5 md:hidden">
+            <Link href='/sitemap' className="block text-sm text-center w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-200">
+              すべてのタグを見る
+            </Link>
+          </div>
+        </aside>
+
+        <section className="md:w-7/10 w-full">
+          <nav className="w-full">
+            <div className="max-w-6xl md:mx-auto h-8 border-b border-gray-400">
+              {categories && categories.length > 0 ? (
+                <CategoryNav categories={categories}/>
+              ) : (
+                <p>
+                  {categories === null ? 'カテゴリの取得に失敗しました。再度お試しください。' : '現在、カテゴリがありません。'}
+                </p>
+              )}
+            </div>
+          </nav>
+
+          {posts && posts.length > 0 ? (
+            <ul className="grid grid-cols-1 md:gap-3 md:grid-cols-3">
+              {posts.map((post) => (
+                <li key={post.id} className="hover:bg-gray-100 transition duration-300 md:pt-5 mb-0 md:p-2 mx-2 md:mx-0 border-b border-gray-400 md:border-none">
+                  <Link href={`/blog/${post.slug}`} className="h-full md:block flex items-center justify-between py-2 md:py-0 flex-row-reverse">
+                    <div className="md:mb-3">
+                      <img src={post.eyecatch?.url} alt="サムネイル画像" className="w-full md:h-34 h-15 object-cover rounded-xl overflow-hidden"/>
+                    </div>
+
+                    <div className="w-60 md:w-full">
+                      <h2 className="font-semibold md:text-base text-sm mb-3">{post.title}</h2>
+                      <div className="flex items-center md:gap-x-2 gap-x-1">
+                        <div className="flex items-center md:gap-x-2 gap-x-1">
+                          <div className="relative border rounded-full w-4 h-4 md:w-6 md:h-6 overflow-hidden">
+                            <Image
+                              src="/onepage.png"
+                              alt="アイコン画像"
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <h3 className="md:text-sm text-black text-xs">Yuma</h3>
+                        </div>
+                        <p className="text-gray-600 md:text-xs text-[10px]">{formatRelativeTime(post.updatedAt)}</p>
+                      </div>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-5">
+              {posts === null ? 'ブログ記事の取得に失敗しました。再度お試しください。' : '現在、記事がありません。'}
+            </p>
+          )}
+        </section>
+      </div>
+    </main>
   );
 }
