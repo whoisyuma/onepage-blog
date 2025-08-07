@@ -57,7 +57,7 @@ export default function RootLayout({
         {children}
 
       {/* フッター */}
-      <footer className="border-t border-gray-200 mb-3">
+      <footer className="bg-white w-full border-t border-gray-200">
         <nav>
           <Link href='/sitemap' className="mx-3 text-xs text-gray-600 hover:text-black">
             サイトマップ
@@ -69,7 +69,7 @@ export default function RootLayout({
             サイトマップ
           </Link> */}
         </nav>
-        <p className="text-sm flex justify-center mt-1">
+        <p className="text-xs md:text-sm flex justify-center mt-1 pb-3">
           Copyright &copy; OnePage Blog All Rights Reserved.
         </p>
       </footer>
