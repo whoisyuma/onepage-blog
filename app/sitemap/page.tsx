@@ -87,17 +87,17 @@ export default async function SiteMap() {
               
             <div>
               <h2 className="text-2xl font-bold mb-4 text-gray-800 bg-gray-200 p-2">タグ一覧</h2>
-                    {tags && tags.length > 0 && (
-                        <ul className="flex flex-wrap mt-1 ml-5">
-                            {tags.map((tag) => (
-                                <li key={tag.id}>
-                                    <Link href={`/tags/${tag.slug}`} className="inline-flex items-center bg-white hover:bg-gray-100 border mr-1 mb-1 border-gray-400 rounded-xl px-3 py-1 text-sm text-gray-600 hover:border-gray-500 transition duration-200">
-                                        #{tag.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                {tags && tags.length > 0 && (
+                  <ul className="flex flex-wrap mt-1 ml-5">
+                    {tags.map((tag) => (
+                      <li key={tag.id}>
+                        <Link href={`/tags/${tag.slug}`} className="inline-flex items-center bg-white hover:bg-gray-100 border mr-1 mb-1 border-gray-400 rounded-xl px-3 py-1 text-sm text-gray-600 hover:border-gray-500 transition duration-200">
+                          #{tag.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
             </div>
           </section>
         </div>
