@@ -69,7 +69,7 @@ export default function RootLayout({
             サイトマップ
           </Link> */}
         </nav>
-        <p className="text-xs md:text-sm flex justify-center mt-1 pb-3">
+        <p className="text-xs md:text-sm text-gray-700 flex justify-center mt-1 pb-3">
           Copyright &copy; OnePage Blog All Rights Reserved.
         </p>
       </footer>
