@@ -119,6 +119,11 @@ export default async function BlogDetail({params}: PageProps) {
                                     </div>
                                 </div>
                                 <BlogContent className={style['blog-content']} content={post.body}/>
+                                <div className="mb-15">
+                                    <Link href='/' className="text-sm text-gray-600 underline hover:text-black">
+                                        ← ホームに戻る
+                                    </Link>
+                                </div>
                                 {post.tags && Array.isArray(post.tags) && post.tags.length > 0 && (
                                     <div className="flex flex-col">
                                         <span className="text-sm font-semibold">タグ：</span>
