@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import style from '../blog/[slug]/BlogDetail.module.css';
 
 // Propsの型指定
 type Props = {
