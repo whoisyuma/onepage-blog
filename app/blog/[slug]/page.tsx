@@ -183,7 +183,7 @@ export default async function BlogDetail({params}: PageProps) {
                                     </div>
                                     <div className="w-1/2 text-right md:pl-5 pl-2 pr-2">
                                         {post.nextBlog && (
-                                            <Link href={`/blog/${post.nextBlog.slug}`} className="flex items-center">
+                                            <Link href={`/blog/${post.nextBlog.slug}`} className="flex items-center justify-end">
                                                 <div className="md:mr-5 mr-3">
                                                     <p className="text-xs text-gray-500">次の記事</p>
                                                     <h3 className="font-bold line-clamp-2">{post.nextBlog.title}</h3>
