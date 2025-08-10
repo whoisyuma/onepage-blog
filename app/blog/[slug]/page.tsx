@@ -72,7 +72,7 @@ async function getBlogWithNavigation(slug: string): Promise<BlogWithNav | null> 
         }
 
         // 前後の記事の情報を取得
-        const navData = await client.getList<{ id: string, title: String, slug: string }>({
+        const navData = await client.getList<{ id: string, title: string, slug: string }>({
             endpoint: 'blogs',
             queries: {
                 fields: 'id,title,slug',
