@@ -26,6 +26,12 @@ type Blog = {
   body: string,
 }
 
+// 前後の記事情報を含めた型定義
+type BlogWithNav = Blog & {
+    prevBlog: {title: string, slug: string} | null,
+    nextBlog: {title: string, slug: string} | null,
+}
+
 // Propsの型指定
 type PageProps = {
     params: Promise<{slug: string}>
@@ -46,24 +52,50 @@ export async function generateStaticParams() {
     }
 }
 
-// 特定の投稿を取得する
-async function getBlogDetail(slug: string): Promise<Blog | null> {
+// 特定の投稿とその前後の記事の取得
+async function getBlogWithNavigation(slug: string): Promise<BlogWithNav | null> {
     try {
         const decodedSlug = decodeURIComponent(slug);
-        const data = await client.getList<Blog>({
+
+        // 現在の記事を取得
+        const currentBlogData = await client.getList<Blog>({
             endpoint: 'blogs',
             queries: {
                 filters: `slug[equals]${decodedSlug}`,
             },
         });
+        
+        const currentBlog = currentBlogData.contents[0];
 
-        if (data.contents.length > 0) {
-            return data.contents[0];
-        } else {
+        if (!currentBlog) {
             return null;
         }
+
+        // 前後の記事の情報を取得
+        const navData = await client.getList<{ id: string, title: String, slug: string }>({
+            endpoint: 'blogs',
+            queries: {
+                fields: 'id,title,slug',
+                orders: '-updatedAt',
+                limit: 50,
+            }
+        });
+
+        const currentIndex = navData.contents.findIndex((blog) => blog.slug === currentBlog.slug);
+
+        const prevBlog = currentIndex > 0 ? {
+            title: navData.contents[currentIndex - 1].title.toString(),
+            slug: navData.contents[currentIndex - 1].slug,
+        } : null;
+
+        const nextBlog = currentIndex < navData.contents.length - 1 ? {
+            title: navData.contents[currentIndex + 1].title.toString(),
+            slug: navData.contents[currentIndex + 1].slug,
+        } : null;
+
+        return {...currentBlog, prevBlog, nextBlog};
     } catch (error) {
-        console.error('ブログ記事の取得に失敗しました：', error)
+        console.error('ブログ記事とナビゲーションの取得に失敗しました。', error);
         return null;
     }
 }
@@ -76,7 +108,7 @@ function formatData(dateString: string): string {
 
 export default async function BlogDetail({params}: PageProps) {
     const {slug} = await params;
-    const post = await getBlogDetail(slug)
+    const post = await getBlogWithNavigation(slug)
 
     return (
         <main className='bg-white pt-18 min-h-screen'>
@@ -136,6 +168,30 @@ export default async function BlogDetail({params}: PageProps) {
                                         </div>
                                     </div>
                                 )}
+                            </div>
+                            <div className="flex justify-between items-center mt-15 pt-5 border-t border-gray-300">
+                                    <div className="w-1/2 text-left md:pr-5 pl-2 pr-2 border-r border-gray-200">
+                                        {post.prevBlog && (
+                                            <Link href={`/blog/${post.prevBlog.slug}`} className="flex items-center">
+                                                <p className="font-extrabold text-gray-400 text-xs">＜</p>
+                                                <div className="md:ml-5 ml-3">
+                                                    <p className="text-xs text-gray-500">前の記事</p>
+                                                    <h3 className="font-bold line-clamp-2">{post.prevBlog.title}</h3>
+                                                </div>
+                                            </Link>
+                                        )}
+                                    </div>
+                                    <div className="w-1/2 text-right md:pl-5 pl-2 pr-2">
+                                        {post.nextBlog && (
+                                            <Link href={`/blog/${post.nextBlog.slug}`} className="flex items-center">
+                                                <div className="md:mr-5 mr-3">
+                                                    <p className="text-xs text-gray-500">次の記事</p>
+                                                    <h3 className="font-bold line-clamp-2">{post.nextBlog.title}</h3>
+                                                </div>
+                                                <p className="font-extrabold text-gray-400 text-xs">＞</p>
+                                            </Link>
+                                        )}
+                                    </div>
                                 </div>
                         </div>
                     </section>
