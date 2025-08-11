@@ -17,7 +17,7 @@ type Props = {
 
 export default function TagList({tags}: Props) {
     const [showAll, setShowAll] = useState(false);
-    const visibleTags = showAll ? tags : tags.slice(0, 5);
+    const visibleTags = showAll ? tags : tags.slice(0, 10);
 
     return (
         <div>
@@ -30,7 +30,7 @@ export default function TagList({tags}: Props) {
             </div>
 
             {/* showAllによってボタンを変える */}
-            {tags.length > 5 && (
+            {tags.length > 10 && (
                 <div className="mt-1 text-xs">
                     <button onClick={() => setShowAll(!showAll)} className="text-gray-600 hover:text-gray-800 hover:underline transition duration-200">
                         {showAll ? '表示を減らす' : 'すべてのタグを表示'}
