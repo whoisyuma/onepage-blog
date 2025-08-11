@@ -19,7 +19,7 @@ type Eyecatch = {
 type Blog = {
   id: string,
   title: string,
-  updatedAt: string,
+  publishedAt: string,
   eyecatch?: Eyecatch,
   slug: string,
 }
@@ -122,6 +122,7 @@ export default async function Home() {
 
   return (
     <main className='bg-white pt-18 min-h-screen pb-10'>
+      {/* メイン画像 */}
       <div className="relative w-full h-40 md:h-55">
         <Image
           src="/main-picture.png"
@@ -132,6 +133,7 @@ export default async function Home() {
       </div>
 
       <div className="flex flex-col md:flex-row gap-2 md:gap-6 md:mt-10 max-w-6xl md:mx-auto">
+        {/* 左のプロフィールセクション */}
         <aside className="md:w-3/10 w-full md:p-0 p-4">
           <HomeProfile/>
 
@@ -149,6 +151,7 @@ export default async function Home() {
           </div>
         </aside>
 
+        {/* 右のブログ一覧セクション */}
         <section className="md:w-7/10 w-full">
           <nav className="w-full">
             <div className="max-w-6xl md:mx-auto h-8 border-b border-gray-400">
@@ -185,7 +188,7 @@ export default async function Home() {
                           </div>
                           <h3 className="md:text-sm text-black text-xs">Yuma</h3>
                         </div>
-                        <p className="text-gray-600 md:text-xs text-[10px]">{formatRelativeTime(post.updatedAt)}</p>
+                        <p className="text-gray-600 md:text-xs text-[10px]">{formatRelativeTime(post.publishedAt)}</p>
                       </div>
                     </div>
                   </Link>

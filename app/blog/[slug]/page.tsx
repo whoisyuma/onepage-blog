@@ -122,7 +122,7 @@ export default async function BlogDetail({params}: PageProps) {
 
                     <section className="lg:w-8/10 w-full pb-10">
                         <div className="lg:ml-10 lg:mr-65 flex flex-col md:mx-20">
-                            <div className="relative w-full lg:h-100 md:h-90 h-60 mb-10 overflow-hidden">
+                            <div className="relative w-full border border-gray-300 lg:h-100 md:h-90 h-60 mb-10 overflow-hidden">
                                 {post.eyecatch?.url && (
                                     <Image
                                     src={post.eyecatch.url}
@@ -147,7 +147,7 @@ export default async function BlogDetail({params}: PageProps) {
                                     </div>
                                     <div>
                                         <p className="text-sm text-black">Yuma</p>
-                                        <p className="text-xs text-gray-600">{formatData(post.updatedAt)}</p>
+                                        <p className="text-xs text-gray-600">最終更新日：{formatData(post.updatedAt)}</p>
                                     </div>
                                 </div>
                                 <BlogContent className={style['blog-content']} content={post.body}/>
