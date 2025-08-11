@@ -64,19 +64,19 @@ export default async function SiteMap() {
 
           <section className="md:w-7/10 w-full md:px-4 px-2">
             <div className="mb-5">
-              <h2 className="text-2xl font-bold mb-4 text-gray-800 bg-gray-200 p-2">固定ページ</h2>
+              <h2 className="text-xl font-bold mb-4 text-gray-800 bg-gray-200 p-2">固定ページ</h2>
               <ul className="space-y-2 text-lg ml-10">
-                <li className="list-disc"><Link href='/' className="text-gray-600 hover:text-gray-900 hover:border-b">ホーム</Link></li>
+                <li className="list-disc"><Link href='/' className="text-base text-gray-600 hover:text-gray-900 hover:border-b">ホーム</Link></li>
               </ul>
             </div>
 
             <div className="mb-5">
-              <h2 className="text-2xl font-bold mb-4 text-gray-800 bg-gray-200 p-2">カテゴリ一覧</h2>
+              <h2 className="text-xl font-bold mb-4 text-gray-800 bg-gray-200 p-2">カテゴリ一覧</h2>
                 {categories && categories.length > 0 && (
                   <ul className="space-y-2 text-lg ml-10">
                     {categories.map((category) => (
                       <li key={category.id} className="list-disc">
-                        <Link href={`categories/${category.slug}`} className="text-gray-600 hover:text-gray-900 hover:border-b">
+                        <Link href={`categories/${category.slug}`} className="text-base text-gray-600 hover:text-gray-900 hover:border-b">
                           {category.name}
                         </Link>
                       </li>
@@ -86,7 +86,7 @@ export default async function SiteMap() {
             </div>
               
             <div>
-              <h2 className="text-2xl font-bold mb-4 text-gray-800 bg-gray-200 p-2">タグ一覧</h2>
+              <h2 className="text-xl font-bold mb-4 text-gray-800 bg-gray-200 p-2">タグ一覧</h2>
                 {tags && tags.length > 0 && (
                   <ul className="flex flex-wrap mt-1 ml-5">
                     {tags.map((tag) => (
