@@ -171,22 +171,22 @@ export default async function BlogDetail({params}: PageProps) {
                             </div>
                             <div className="flex justify-between items-center mt-15 pt-5 border-t border-gray-300">
                                     <div className="w-1/2 text-left md:pr-5 pl-2 pr-2 border-r border-gray-200">
-                                        {post.prevBlog && (
-                                            <Link href={`/blog/${post.prevBlog.slug}`} className="flex items-center">
+                                        {post.nextBlog && (
+                                            <Link href={`/blog/${post.nextBlog.slug}`} className="flex items-center">
                                                 <p className="font-extrabold text-gray-400 text-xs">＜</p>
                                                 <div className="md:ml-5 ml-3">
                                                     <p className="text-xs text-gray-500">前の記事</p>
-                                                    <h3 className="font-bold line-clamp-2">{post.prevBlog.title}</h3>
+                                                    <h3 className="font-bold line-clamp-2">{post.nextBlog.title}</h3>
                                                 </div>
                                             </Link>
                                         )}
                                     </div>
                                     <div className="w-1/2 text-right md:pl-5 pl-2 pr-2">
-                                        {post.nextBlog && (
-                                            <Link href={`/blog/${post.nextBlog.slug}`} className="flex items-center justify-end">
+                                        {post.prevBlog && (
+                                            <Link href={`/blog/${post.prevBlog.slug}`} className="flex items-center justify-end">
                                                 <div className="md:mr-5 mr-3">
                                                     <p className="text-xs text-gray-500">次の記事</p>
-                                                    <h3 className="font-bold line-clamp-2">{post.nextBlog.title}</h3>
+                                                    <h3 className="font-bold line-clamp-2">{post.prevBlog.title}</h3>
                                                 </div>
                                                 <p className="font-extrabold text-gray-400 text-xs">＞</p>
                                             </Link>
