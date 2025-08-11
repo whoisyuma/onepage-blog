@@ -76,7 +76,7 @@ async function getBlogWithNavigation(slug: string): Promise<BlogWithNav | null> 
             endpoint: 'blogs',
             queries: {
                 fields: 'id,title,slug',
-                orders: '-updatedAt',
+                orders: '-publishedAt',
                 limit: 50,
             }
         });
