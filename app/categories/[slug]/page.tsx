@@ -214,8 +214,8 @@ export default async function CategoriesHome({params}: CategoryPageProps) {
                               <Image
                                 src={post.eyecatch.url}
                                 alt="サムネイル画像"
-                                layout="fill"
-                                objectFit="cover"
+                                fill
+                                className="object-cover"
                               />
                             </div>
                           )}

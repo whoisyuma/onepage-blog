@@ -170,17 +170,14 @@ export default async function Home() {
               {posts.map((post) => (
                 <li key={post.id} className="hover:bg-gray-100 transition duration-300 md:pt-5 mb-0 md:p-2 mx-2 md:mx-0 border-b border-gray-400 md:border-none">
                   <Link href={`/blog/${post.slug}`} className="h-full md:block flex items-center justify-between py-2 md:py-0 flex-row-reverse">
-                    {/* <div className="md:mb-3">
-                      <img src={post.eyecatch?.url} alt="サムネイル画像" className="md:w-full border border-gray-300 md:h-34 h-15 w-30 object-cover rounded-xl overflow-hidden"/>
-                    </div> */}
                     <div className="md:mb-3">
                       {post.eyecatch && (
                         <div className="relative md:w-full md:h-34 h-15 w-30 overflow-hidden rounded-xl border border-gray-300">
                           <Image
                             src={post.eyecatch.url}
                             alt="サムネイル画像"
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            className="object-cover"
                           />
                         </div>
                       )}
