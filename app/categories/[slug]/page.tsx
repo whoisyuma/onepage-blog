@@ -170,76 +170,85 @@ export default async function CategoriesHome({params}: CategoryPageProps) {
           </div>
           
 
-            <div className="flex flex-col md:flex-row gap-2 md:gap-6 md:mt-10 max-w-6xl md:mx-auto">
-              {/* 左のプロフィールセクション */}
-                <aside className="md:w-3/10 w-full md:p-0 p-4">
-                    <HomeProfile/>
+          <div className="flex flex-col md:flex-row gap-2 md:gap-6 md:mt-10 max-w-6xl md:mx-auto">
+            {/* 左のプロフィールセクション */}
+            <aside className="md:w-3/10 w-full md:p-0 p-4">
+              <HomeProfile/>
 
-                    {tags && tags.length > 0 && (
-                      <div className="mt-5 hidden md:block">
-                        <h2 className="text-sm font-bold">タグ一覧</h2>
-                        <TagList tags={tags}/>
-                      </div>
-                    )}
+              {tags && tags.length > 0 && (
+                <div className="mt-5 hidden md:block">
+                  <h2 className="text-sm font-bold">タグ一覧</h2>
+                  <TagList tags={tags}/>
+                </div>
+              )}
 
-                    <div className="mt-5 md:hidden">
-                      <Link href='/sitemap' className="block text-sm text-center w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-200">
-                        すべてのタグを見る
-                      </Link>
-                    </div>
-                </aside>
+              <div className="mt-5 md:hidden">
+                <Link href='/sitemap' className="block text-sm text-center w-full px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition duration-200">
+                  すべてのタグを見る
+                </Link>
+              </div>
+            </aside>
 
-                {/* 右のブログ一覧セクション */}
-                <section className="md:w-7/10 w-full">
-                  <nav className="w-full">
-                    <div className="max-w-6xl md:mx-auto h-8 border-b border-gray-400">
-                      {categories && categories.length > 0 ? (
-                        <CategoryNav categories={categories}/>
-                      ) : (
-                        <p>
-                          {categories === null ? 'カテゴリの取得に失敗しました。再度お試しください。' : '現在、カテゴリがありません。'}
-                        </p>
-                      )}
-                    </div>
-                  </nav>
-
-                  {posts && posts.length > 0 ? (
-                    <ul className="grid grid-cols-1 md:gap-3 md:grid-cols-3">
-                      {posts.map((post) => (
-                          <li key={post.id} className="hover:bg-gray-100 transition duration-300 md:pt-5 mb-0 md:p-2 mx-2 md:mx-0 border-b border-gray-400 md:border-none">
-                            <Link href={`/blog/${post.slug}`} className="h-full md:block flex items-center justify-between py-2 md:py-0 flex-row-reverse">
-                              <div className="md:mb-3">
-                                <img src={post.eyecatch?.url} alt="サムネイル画像" className="md:w-full border border-gray-300 md:h-34 h-15 w-30 object-cover rounded-xl overflow-hidden"/>
-                              </div>
-
-                              <div className="w-60 md:w-full">
-                                <h2 className="font-semibold md:text-base text-sm mb-3">{post.title}</h2>
-                                <div className="flex items-center md:gap-x-2 gap-x-1">
-                                  <div className="flex items-center md:gap-x-2 gap-x-1">
-                                    <div className="relative border rounded-full w-4 h-4 md:w-6 md:h-6 overflow-hidden">
-                                      <Image
-                                        src="/onepage.png"
-                                        alt="アイコン画像"
-                                        fill
-                                        className="object-cover"
-                                      />
-                                    </div>
-                                    <h3 className="md:text-sm text-black text-xs">Yuma</h3>
-                                  </div>
-                                  <p className="text-gray-600 md:text-xs text-[10px]">{formatRelativeTime(post.publishedAt)}</p>
-                                </div>
-                              </div>
-                            </Link>
-                          </li>
-                      ))}
-                    </ul>
+            {/* 右のブログ一覧セクション */}
+            <section className="md:w-7/10 w-full">
+              <nav className="w-full">
+                <div className="max-w-6xl md:mx-auto h-8 border-b border-gray-400">
+                  {categories && categories.length > 0 ? (
+                    <CategoryNav categories={categories}/>
                   ) : (
-                    <p className="mt-5">
-                      {posts === null ? 'ブログ記事の取得に失敗しました。再度お試しください。' : 'これから書く予定です。。。'}
+                    <p>
+                      {categories === null ? 'カテゴリの取得に失敗しました。再度お試しください。' : '現在、カテゴリがありません。'}
                     </p>
                   )}
-                </section>
-            </div>
+                </div>
+              </nav>
+
+              {posts && posts.length > 0 ? (
+                <ul className="grid grid-cols-1 md:gap-x-3 md:gap-y-1 md:grid-cols-3">
+                  {posts.map((post) => (
+                    <li key={post.id} className="hover:bg-gray-100 transition duration-300 md:pt-5 mb-0 md:p-2 mx-2 md:mx-0 border-b border-gray-400 md:border-none">
+                      <Link href={`/blog/${post.slug}`} className="h-full md:block flex items-center justify-between py-2 md:py-0 flex-row-reverse">
+                        <div className="md:mb-3">
+                          {post.eyecatch && (
+                            <div className="relative md:w-full md:h-34 h-15 w-30 overflow-hidden rounded-xl border border-gray-300">
+                              <Image
+                                src={post.eyecatch.url}
+                                alt="サムネイル画像"
+                                layout="fill"
+                                objectFit="cover"
+                              />
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="w-60 md:w-full">
+                          <h2 className="font-semibold md:text-base text-sm mb-3 line-clamp-2 md:line-clamp-none">{post.title}</h2>
+                          <div className="flex items-center md:gap-x-2 gap-x-1">
+                            <div className="flex items-center md:gap-x-2 gap-x-1">
+                              <div className="relative border rounded-full w-4 h-4 md:w-6 md:h-6 overflow-hidden">
+                                <Image
+                                  src="/onepage.png"
+                                  alt="アイコン画像"
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                              <h3 className="md:text-sm text-black text-xs">Yuma</h3>
+                            </div>
+                            <p className="text-gray-600 md:text-xs text-[10px]">{formatRelativeTime(post.publishedAt)}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-5">
+                  {posts === null ? 'ブログ記事の取得に失敗しました。再度お試しください。' : 'これから書く予定です。。。'}
+                </p>
+              )}
+            </section>
+          </div>
         </main>
     )
 }
