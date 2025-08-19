@@ -129,6 +129,8 @@ export default async function Home() {
           alt="メイン画像"
           fill
           className="object-cover"
+          sizes="100vw"
+          priority
         />
       </div>
 
