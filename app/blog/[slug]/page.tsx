@@ -15,6 +15,13 @@ type Eyecatch = {
   width: number,
 }
 
+// SNSシェア用画像の型指定
+type OgpImage = {
+  url: string,
+  height: number,
+  width: number,
+}
+
 // ブログ記事の型指定
 type Blog = {
   id: string,
@@ -24,6 +31,10 @@ type Blog = {
   slug: string,
   tags: string,
   body: string,
+  description: string,
+  ogpTitle?: string,
+  ogpDescription?: string,
+  ogpImage?: OgpImage,
 }
 
 // 前後の記事情報を含めた型定義
@@ -106,9 +117,45 @@ function formatData(dateString: string): string {
   return date.toLocaleDateString('ja-JP');
 }
 
+// OG情報の指定
+export async function generateMetadata({params}: PageProps) {
+    const {slug} = await params;
+    const post = await getBlogWithNavigation(slug);
+
+    if (!post) {
+        return {};
+    }
+
+    const ogpTitle = post.ogpTitle || post.title;
+    const ogpDescription = post.ogpDescription || post.description;
+    const ogpImageUrl = post.ogpImage?.url || post.eyecatch?.url;
+
+    return {
+        title: post.title,
+        descripton: post.description,
+        openGraph: {
+            title: ogpTitle,
+            description: ogpDescription,
+            images: [
+                {
+                    url: ogpImageUrl,
+                    width: post.ogpImage?.width || 1200,
+                    height: post.ogpImage?.height || 630,
+                }
+            ]
+        },
+        twitter: {
+            card: 'summary',
+            title: ogpTitle,
+            description: ogpDescription,
+            images: [ogpImageUrl]
+        }
+    }
+}
+
 export default async function BlogDetail({params}: PageProps) {
     const {slug} = await params;
-    const post = await getBlogWithNavigation(slug)
+    const post = await getBlogWithNavigation(slug);
 
     return (
         <main className='bg-white pt-18 min-h-screen'>
