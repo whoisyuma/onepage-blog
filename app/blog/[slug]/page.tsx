@@ -15,6 +15,13 @@ type Eyecatch = {
   width: number,
 }
 
+// タグの型指定
+type Tag = {
+    id: string;
+    name: string;
+    slug: string;
+}
+
 // SNSシェア用画像の型指定
 type OgpImage = {
   url: string,
@@ -29,7 +36,7 @@ type Blog = {
   updatedAt: string,
   eyecatch?: Eyecatch,
   slug: string,
-  tags: string,
+  tags: Tag[],
   body: string,
   description: string,
   ogpTitle?: string,
