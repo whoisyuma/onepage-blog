@@ -36,14 +36,14 @@
 
 ## 追加したい機能
 - 人気記事の取得。
-- ~~前の記事、次の記事をすぐに見れるボタンの追加~~ (2025-08-10実装)
+- ~~前の記事、次の記事をすぐに見れるボタンの追加~~ (実装済み)
 - ログイン機能の実装でいいねやコメント機能の追加
 - SNS共有ボタンの配置
 - お問い合わせページの追加
 - プライバシーポリシーの追加
 - Google Adsenseに登録
-- microCMSから埋め込みリンクを取得できるようにする
-- OGPの設定と検索エンジン向けのメタデータの設定
+- ~~microCMSから埋め込みリンクを取得できるようにする~~（実装済み）
+- ~~OGPの設定と検索エンジン向けのメタデータの設定~~（実装済み）
 - 投稿内の画像の最適化
 - notfoundやloadingページの設定
 
@@ -117,14 +117,14 @@ It includes a blog post list page and individual post detail pages, utilizing **
 ## Planned Features
 
 - Displaying popular articles
-- Buttons to navigate to previous/next posts
+- ~~Buttons to navigate to previous/next posts~~ (Fixed)
 - Login functionality, with like and comment features
 - Social media share buttons
 - Contact page
 - Privacy policy page
 - Registering with Google Adsense
-- Ability to embed links from microCMS
-- Set up OGP and SEO metadata
+- ~~Ability to embed links from microCMS~~ (Fixed)
+- ~~Set up OGP and SEO metadata~~ (Fixed)
 - Optimize images within posts
 - Implement `notFound` and `loading` pages
 
